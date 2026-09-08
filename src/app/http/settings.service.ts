@@ -39,7 +39,7 @@ export class SettingsService {
   }
 
   getSelector(request: ISelectorFlowRequest): any {
-    return this._http.post<ISelectorFlowResponse>(`${this.baseUrl}/api/flow/GetSelector`, JSON.stringify(request), this.getPostOptions()).pipe
+    return this._http.post<ISelectorFlowResponse>(`${this.baseUrl}/api/transientFlow/RunSelectorFlow`, JSON.stringify(request), this.getPostOptions()).pipe
     (
       tap((response: ISelectorFlowResponse) => 
       {

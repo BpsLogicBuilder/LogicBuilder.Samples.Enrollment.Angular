@@ -15,11 +15,13 @@ export class UiNotificationService {
   constructor(private readonly _settingsService: SettingsService) { 
     this.navBar =  new Subject<INavigationBar>();
     this.screenSettings =  new Subject<IScreenSettingsBase>();
+    this.persistentFlowItems = {};
   }
 
   public navBar: Subject<INavigationBar>;
   public screenSettings: Subject<IScreenSettingsBase>;
   public flowState?: IFlowState;
+  public persistentFlowItems: Record<string, unknown>;
   public errorMessage: any;
 
   public start(): void {
@@ -28,21 +30,25 @@ export class UiNotificationService {
         this.navBar.next(itm.navigationBar);
         this.screenSettings.next(itm.screenSettings);
         this.flowState = itm.flowState;
+        this.persistentFlowItems = itm.persistentFlowItems;
       },
       error => this.errorMessage = <any>error);
   }
 
   public navStart(request: INavBarRequest): void {
+    request.persistentFlowItems = this.persistentFlowItems;
     this._settingsService.navStart(request).subscribe(
       itm => {
         this.navBar.next(itm.navigationBar);
         this.screenSettings.next(itm.screenSettings);
         this.flowState = itm.flowState;
+        this.persistentFlowItems = itm.persistentFlowItems;
       },
       error => this.errorMessage = <any>error);
   }
 
   public navigateNext(request: IRequestsBase): void {
+    request.persistentFlowItems = this.persistentFlowItems;
     request.flowState = this.flowState;
     this._settingsService.navigateNext(request).subscribe(
       itm => {
@@ -55,6 +61,7 @@ export class UiNotificationService {
           this.navBar.next(itm.navigationBar);
           this.screenSettings.next(itm.screenSettings);
           this.flowState = itm.flowState;
+          this.persistentFlowItems = itm.persistentFlowItems;
         }
       },
       error => this.errorMessage = <any>error);

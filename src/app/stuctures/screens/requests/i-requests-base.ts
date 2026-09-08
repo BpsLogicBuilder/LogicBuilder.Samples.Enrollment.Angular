@@ -3,6 +3,7 @@ import { IFlowState } from "../../i-flow-state";
 import { ViewTypeEnum } from "../i-view-type";
 
 export interface IRequestsBase {
+    persistentFlowItems?: Record<string, unknown>;
     commandButtonRequest: ICommandButtonRequest;
     flowState?: IFlowState;
     viewType: ViewTypeEnum;
