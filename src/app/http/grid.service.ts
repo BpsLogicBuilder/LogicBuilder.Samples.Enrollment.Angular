@@ -1,6 +1,5 @@
-
+import { Service, inject } from '@angular/core';
 import {throwError as observableThrowError,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
 import { ProgressService } from '../common/progress.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataSourceRequestState, toDataSourceRequest, translateDataSourceResultGroups } from '@progress/kendo-data-query';
@@ -10,18 +9,19 @@ import { KendoGridDataRequest } from '../stuctures/screens/kendo-grid-data-reque
 import { tap, map, catchError } from 'rxjs/operators';
 import { UrlsService } from '../http/urls.service'
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class GridService {
+    constructor()
+    {
+        this.baseUrl = this._urls.gridUrl;
+    }
 
-  constructor(private readonly _http: HttpClient, private readonly progressService: ProgressService, _urls: UrlsService) { 
-    this.baseUrl = _urls.gridUrl;
-  }
+    private readonly _http = inject(HttpClient);
+    private readonly progressService = inject(ProgressService);
+    private readonly _urls = inject(UrlsService);
+    private readonly baseUrl: string;
 
-  private readonly baseUrl: string;
-
-  public fetch(state: DataSourceRequestState, requestDetails: IGridRequestDetails): Observable<IGridResult> {
+    public fetch(state: DataSourceRequestState, requestDetails: IGridRequestDetails): Observable<IGridResult> {
     const hasGroups = state.group?.length;
     let request: KendoGridDataRequest = {
       options: toDataSourceRequest(state),
@@ -55,7 +55,6 @@ export class GridService {
   }
 
   private handleError(error: Response) {
-    //console.error(JSON.stringify(error));
-    return observableThrowError(error || 'Server error');
+    return observableThrowError(() => new Error(JSON.stringify(error) || 'Server error'));
   }
 }

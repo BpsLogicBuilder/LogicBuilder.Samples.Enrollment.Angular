@@ -69,6 +69,10 @@ export interface IMultiSelectTemplate {
     modelType?: string;
 }
 
+export interface IFormGroupTemplate {
+    templateName: string;
+}
+
 export interface IFormGroupData {
     displayMessages: { [key: string]: string };
     formGroupData?: { [key: string]: IFormGroupData };
@@ -92,6 +96,7 @@ export interface IFormGroupSettings extends IFormItemSetting, IGroupSettings {
 }
 
 export interface IGroupSettings {
+    formGroupTemplate: IFormGroupTemplate;
     fieldSettings?: Array<IFormItemSetting>;
     validationMessages?: { [key: string]: { [key: string]: string } };
     conditionalDirectives?: { [key: string]: IDirective[] };

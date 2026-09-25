@@ -1,7 +1,6 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import {inject, Service } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { IFlowSettings } from '../stuctures/i-flow-settings';
 import { IRequestsBase } from '../stuctures/screens/requests/i-requests-base';
@@ -10,17 +9,16 @@ import { ISelectorFlowRequest } from '../stuctures/screens/requests/i-selector-f
 import { ISelectorFlowResponse } from '../stuctures/i-selector-flow-response'
 import { UrlsService } from '../http/urls.service'
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class SettingsService {
-
-  constructor(private readonly _http: HttpClient, _urls: UrlsService) { 
-    this.baseUrl = _urls.workflowUrl
+    
+  constructor() { 
+    this.baseUrl = this._urls.workflowUrl
   }
 
   private readonly baseUrl: string;
+  private readonly _http = inject(HttpClient);
+  private readonly _urls = inject(UrlsService);
 
   start(): Observable<IFlowSettings> {
     return this._http.post<IFlowSettings>(`${this.baseUrl}/api/flow/Start`, JSON.stringify({}), this.getPostOptions()).pipe
@@ -66,6 +64,6 @@ export class SettingsService {
 
   private handleError(error: Response) {
     console.error(JSON.stringify(error));
-    return observableThrowError(error || 'Server error');
+    return observableThrowError(() => new Error(JSON.stringify(error) || 'Server error'));
   }
 }

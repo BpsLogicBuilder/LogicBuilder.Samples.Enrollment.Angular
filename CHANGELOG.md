@@ -1,3 +1,4 @@
+* 2026-09-25 - AB#210: Upgrade to Angular v22.
 * 2026-09-07 - AB#210: prefer persistent keys over implemented members.
 * 2026-08-20 - AB#207: Update ports to support unprivileged image on AKS.
 * 2026-08-19 - AB#207: Fix the target port.

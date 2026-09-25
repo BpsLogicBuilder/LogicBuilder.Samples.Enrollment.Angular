@@ -1,5 +1,5 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IFormRequestDetails, IRequestDetails } from '../stuctures/screens/i-request-details';
 import { tap, map, catchError } from 'rxjs/operators';
@@ -11,13 +11,12 @@ import { IUpdateItemServiceRequest } from '../stuctures/requests/i-update-item-s
 import { IBaseModel } from '../stuctures/screens/i-base-model'
 import { UrlsService } from '../http/urls.service'
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class GenericService {
-
-  constructor(private readonly _http: HttpClient, _urls: UrlsService) { 
-    this.baseUrl = _urls.crudUrl;
+    private readonly _http = inject(HttpClient);
+    private readonly _urls = inject(UrlsService);
+    constructor() { 
+    this.baseUrl = this._urls.crudUrl;
   }
 
   private readonly baseUrl: string;
@@ -125,6 +124,6 @@ export class GenericService {
 
   private handleError(error: Response) {
     console.error(JSON.stringify(error));
-    return observableThrowError(error || 'Server error');
+    return observableThrowError(() => new Error(JSON.stringify(error) || 'Server error'));
   }
 }

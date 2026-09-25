@@ -1,12 +1,13 @@
 import { IDataRequestState } from "../i-data-request-state";
 import { IAggregate } from "../i-aggregate";
 import { IGridRequestDetails, IRequestDetails } from "../i-request-details";
+import { ScrollMode } from '@progress/kendo-angular-grid';
 
 export interface IGridSettings {
     title: string;
     sortable: boolean;
     pageable: boolean;
-    scrollable: string;
+    scrollable: ScrollMode;
     groupable: boolean;
     filterable: boolean | "row" | "menu" | "menu, row";
     columns: IColumnSettings[];

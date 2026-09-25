@@ -1,17 +1,15 @@
-/// <reference types="jasmine" />
-
-import { TestBed, inject } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { GridService } from './grid.service';
 
 describe('GridService', () => {
+  let service: GridService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [GridService]
-    });
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GridService);
   });
 
-  it('should be created', inject([GridService], (service: GridService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

@@ -1,29 +1,28 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "contoso": {
+    "enrollment": {
+      "projectType": "application",
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "projectType": "application",
       "prefix": "app",
-      "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/contoso"
-            },
-            "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
-            "tsConfig": "src/tsconfig.app.json",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -31,127 +30,48 @@
               "src/styles.css",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": [],
-            "extractLicenses": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true,
-            "browser": "src/main.ts"
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
-              ]
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "contoso:build"
-          },
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "contoso:build:production"
+              "buildTarget": "enrollment:build:production"
+            },
+            "development": {
+              "buildTarget": "enrollment:build:development"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "contoso:build"
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/@progress/kendo-theme-default/dist/all.css",
-              "src/styles.css",
-              "node_modules/font-awesome/css/font-awesome.css"
-            ],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
-          }
-        }
-      }
-    },
-    "contoso-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "contoso:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "contoso:serve:production"
-            }
-          }
+          "builder": "@angular/build:unit-test"
         }
       }
     }
-  },
-  "schematics": {
-    "@schematics/angular:component": {
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
-    }
-  },
-  "cli": {
-    "analytics": false
   }
 }
