@@ -143,7 +143,7 @@ export class ObjectHelper {
             if ((field.abstractControlType === abstractControlKind.dropdownSelectorControl 
                 || field.abstractControlType === abstractControlKind.inputFieldControl 
                 || field.abstractControlType === abstractControlKind.multiSelectFormControl) 
-                && formGroup.controls[field.field])
+                && formGroup.controls[field['field']])
             {
                 updateFieldValue(field);
             }
@@ -151,47 +151,47 @@ export class ObjectHelper {
             {
                 this.updatePatchObject(patchObject, formGroup, <IFormItemSetting[]>(<IGroupBoxSettings>field).fieldSettings, item, dateService, fb);
             }
-            else if (item && field.abstractControlType === abstractControlKind.formGroup && formGroup.controls[field.field])
+            else if (item && field.abstractControlType === abstractControlKind.formGroup && formGroup.controls[field['field']])
             {
-                patchObject[field.field] = this.getPatchObject(<UntypedFormGroup>formGroup.controls[field.field], <IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, item[field.field], dateService, fb);
+                patchObject[field['field']] = this.getPatchObject(<UntypedFormGroup>formGroup.controls[field['field']], <IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, item[field['field']], dateService, fb);
             }
             else if (item && field.abstractControlType === abstractControlKind.formGroupArray)
             {
-                if (item[field.field]?.length && formGroup.controls[field.field])
+                if (item[field['field']]?.length && formGroup.controls[field['field']])
                 {
-                    patchObject[field.field] = [];
-                    item[field.field].forEach((element: EntityType) =>
+                    patchObject[field['field']] = [];
+                    item[field['field']].forEach((element: EntityType) =>
                     {
-                        let formArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[field.field];
+                        let formArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[field['field']];
                         let fg: UntypedFormGroup = ObjectHelper.buildFormGroup(<IFormItemSetting[]>(<IFormGroupArraySettings>field).fieldSettings, fb);
 
                         formArray.push(fg);
-                        patchObject[field.field].push(this.getPatchObject(fg, <IFormItemSetting[]>(<IFormGroupArraySettings>field).fieldSettings, element, dateService, fb));
+                        patchObject[field['field']].push(this.getPatchObject(fg, <IFormItemSetting[]>(<IFormGroupArraySettings>field).fieldSettings, element, dateService, fb));
                     });
                 }
                 else
                 {
-                    patchObject[field.field] = [];
+                    patchObject[field['field']] = [];
                 }
             }
             else
             {
-                patchObject[field.field] = null;
+                patchObject[field['field']] = null;
             }
         });
 
         function updateFieldValue(field: IFormItemSetting) {
             if (item) {
-                patchObject[field.field] = field.type == 'date'
-                    ? dateService.convertToDate(item[field.field])
-                    : item[field.field];
+                patchObject[field['field']] = field['type'] == 'date'
+                    ? dateService.convertToDate(item[field['field']])
+                    : item[field['field']];
             }
             else if ((<IFormControlSettings>field).unchangedValidationSetting) {
-                patchObject[field.field] = (<IFormControlSettings>field).unchangedValidationSetting!.defaultValue;
+                patchObject[field['field']] = (<IFormControlSettings>field).unchangedValidationSetting!.defaultValue;
             }
 
             else {
-                patchObject[field.field] = null;
+                patchObject[field['field']] = null;
             }
         }
     }
@@ -210,21 +210,21 @@ export class ObjectHelper {
             if (field.abstractControlType === abstractControlKind.dropdownSelectorControl 
                 || field.abstractControlType === abstractControlKind.inputFieldControl 
                 || field.abstractControlType === abstractControlKind.multiSelectFormControl) {
-                if (field.unchangedValidationSetting) {
-                    controlsObject[field.field] = [field.unchangedValidationSetting.defaultValue];
+                if (field['unchangedValidationSetting']) {
+                    controlsObject[field['field']] = [field['unchangedValidationSetting'].defaultValue];
                 }
                 else {
-                    controlsObject[field.field] = [null];
+                    controlsObject[field['field']] = [null];
                 }
             }
             else if (field.abstractControlType === abstractControlKind.groupBox) {
                 ObjectHelper.updateControlsObject(<IFormItemSetting[]>(<IGroupBoxSettings>field).fieldSettings, fb, controlsObject);
             }
             else if (field.abstractControlType === abstractControlKind.formGroup) {
-                controlsObject[field.field] = ObjectHelper.buildFormGroup(<IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, fb);
+                controlsObject[field['field']] = ObjectHelper.buildFormGroup(<IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, fb);
             }
             else if (field.abstractControlType === abstractControlKind.formGroupArray) {//Need to add when the data loads - the number of items will depend on the data
-                controlsObject[field.field] = fb.array([]);
+                controlsObject[field['field']] = fb.array([]);
             }
         });
     }
@@ -248,13 +248,13 @@ export class ObjectHelper {
                 || field.abstractControlType === abstractControlKind.inputFieldControl 
                 || field.abstractControlType === abstractControlKind.multiSelectFormControl)
             {
-                if (field.unchangedValidationSetting)
+                if (field['unchangedValidationSetting'])
                 {
-                    if (field.unchangedValidationSetting.validators)
+                    if (field['unchangedValidationSetting'].validators)
                     {
-                        let formControl: UntypedFormControl = <UntypedFormControl>formGroup.get(field.field);
+                        let formControl: UntypedFormControl = <UntypedFormControl>formGroup.get(field['field']);
                         formControl.clearValidators();
-                        formControl.setValidators(ObjectHelper.getValidatorFunctions(field.unchangedValidationSetting.validators));
+                        formControl.setValidators(ObjectHelper.getValidatorFunctions(field['unchangedValidationSetting'].validators));
                         formControl.updateValueAndValidity();
                     }
                 }
@@ -265,11 +265,11 @@ export class ObjectHelper {
             }
             else if (field.abstractControlType === abstractControlKind.formGroup)
             {
-                ObjectHelper.setEditFormValidators(<IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, <UntypedFormGroup>formGroup.get(field.field));
+                ObjectHelper.setEditFormValidators(<IFormItemSetting[]>(<IFormGroupSettings>field).fieldSettings, <UntypedFormGroup>formGroup.get(field['field']));
             }
             else if (field.abstractControlType === abstractControlKind.formGroupArray)
             {
-                let formArray: UntypedFormArray = <UntypedFormArray>formGroup.get(field.field);
+                let formArray: UntypedFormArray = <UntypedFormArray>formGroup.get(field['field']);
                 formArray.controls.forEach(control => {
                     if (field.abstractControlType === abstractControlKind.formGroup)
                     {//Only Supporting formGroups as elements of FormArray

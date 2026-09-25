@@ -1,13 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { AggregateResult } from '@progress/kendo-data-query';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class ProgressService {
-
-  constructor() { }
-
   private set(field: string, target: Record<string, unknown>, value: any) {
     target[field] = value;
     return target;

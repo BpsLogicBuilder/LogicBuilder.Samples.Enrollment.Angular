@@ -1,18 +1,16 @@
-import {inject, Injectable } from '@angular/core';
+import {inject, Service } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class EnvironmentConfigService {
-  private readonly http = inject(HttpClient)
+  private readonly http = inject(HttpClient);
   private env : Record<string, string> = {
     API_URL: ''
   };
 
   load() {
-    return this.http.get<Record<string, string>>('/assets/env.json').pipe(
+    return this.http.get<Record<string, string>>('env.json').pipe(
       tap((data: any) => {
         this.env = data;
         if (!this.env?.["CRUD_URL"]) {
@@ -32,4 +30,3 @@ export class EnvironmentConfigService {
     return this.env?.[key] ?? '';
   }
 }
-

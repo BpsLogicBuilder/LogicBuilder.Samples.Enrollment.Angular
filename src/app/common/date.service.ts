@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Service()
 export class DateService {
 
     constructor() { }
@@ -20,5 +18,7 @@ export class DateService {
 
             return new Date(year, month - 1, day);
         }
+
+        return null;
     }
 }

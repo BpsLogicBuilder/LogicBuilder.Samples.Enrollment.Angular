@@ -1,0 +1,9 @@
+<kendo-multiselect 
+  class="fillparent" 
+  [data]="dataSignal()" 
+  [value]="selectedValues" 
+  [textField]="textFieldInputSignal()" 
+  [valueField]="valueFieldInputSignal()" 
+  [placeholder]="placeholderSignal() || ''"
+  (valueChange)="onChange($event)">
+</kendo-multiselect>

@@ -1,20 +1,15 @@
-import { TestBed, inject } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { GenericService } from './generic.service';
 
-declare const describe: (description: string, specDefinitions: () => void) => void;
-declare const beforeEach: (action: () => void) => void;
-declare const it: (expectation: string, assertion: () => void) => void;
-declare const expect: <T>(actual: T) => { toBeTruthy: () => void };
-
 describe('GenericService', () => {
+  let service: GenericService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [GenericService]
-    });
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GenericService);
   });
 
-  it('should be created', inject([GenericService], (service: GenericService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

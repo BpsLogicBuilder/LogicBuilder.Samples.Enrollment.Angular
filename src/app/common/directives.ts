@@ -86,13 +86,13 @@ export class Directives
             if (setting.abstractControlType == abstractControlKind.groupBox)
             {//Directives.getFormControlSetting gets the fields for IGroupBoxSettings so nothing to do here
             }
-            else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field])
+            else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting['field']])
             {
-                Directives.watchFields((<IFormGroupSettings>setting), <UntypedFormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).conditionalDirectives || {}, formBuilder);
+                Directives.watchFields((<IFormGroupSettings>setting), <UntypedFormGroup>formGroup.controls[setting['field']], (<IFormGroupSettings>setting).conditionalDirectives || {}, formBuilder);
             }
-            else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting.field])
+            else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting['field']])
             {
-                const formGroupArray: UntypedFormArray =  <UntypedFormArray>formGroup.controls[setting.field];
+                const formGroupArray: UntypedFormArray =  <UntypedFormArray>formGroup.controls[setting['field']];
                 if (formGroupArray.controls?.length)
                 {
                     formGroupArray.controls.forEach(control => {
@@ -116,12 +116,12 @@ export class Directives
             {
                 for (let groupBoxField of <IFormItemSetting[]>(<IGroupBoxSettings>field).fieldSettings)
                 {
-                    if (groupBoxField.field === fieldName)
+                    if (groupBoxField['field'] === fieldName)
                         return groupBoxField;
                 }
             }
 
-            if (field.field === fieldName)
+            if (field['field'] === fieldName)
                     return field;
         }
 
@@ -214,8 +214,8 @@ export class Directives
 
             formControl.reset();
 
-            if (args.targetControlFieldSetting.dropDownTemplate)
-                args.targetControlFieldSetting.dropDownTemplate.reload = String(args.newValue);
+            if (args.targetControlFieldSetting['dropDownTemplate'])
+                args.targetControlFieldSetting['dropDownTemplate'].reload = String(args.newValue);
         }
     }
 
@@ -229,8 +229,8 @@ export class Directives
 
             formControl.reset();
 
-            if (args.targetControlFieldSetting.dropDownTemplate)
-                args.targetControlFieldSetting.dropDownTemplate.reload = "";
+            if (args.targetControlFieldSetting['dropDownTemplate'])
+                args.targetControlFieldSetting['dropDownTemplate'].reload = "";
         }
     }
 
@@ -260,10 +260,10 @@ export class Directives
 
     static hasValidator(control: UntypedFormControl, validator: string, questionSetting: IFormItemSetting): boolean
     {
-        if (!(questionSetting.validationSetting?.validators?.length))
+        if (!(questionSetting['validationSetting']?.validators?.length))
             return false;
 
-        let validators: IValidatorDescription[] = questionSetting.validationSetting.validators.filter((v: IValidatorDescription) => v.functionName === validator);
+        let validators: IValidatorDescription[] = questionSetting['validationSetting'].validators.filter((v: IValidatorDescription) => v.functionName === validator);
 
         return validators.length > 0;
     }
@@ -281,10 +281,10 @@ export class Directives
 
     static getValidator(control: UntypedFormControl, validator: string, questionSetting: IFormItemSetting): IValidatorDescription | null
     {
-        if (!(questionSetting.unchangedValidationSetting?.validators?.length))
+        if (!(questionSetting['unchangedValidationSetting']?.validators?.length))
             return null;
 
-        return questionSetting.unchangedValidationSetting.validators.find((v: IValidatorDescription) => v.functionName === validator);
+        return questionSetting['unchangedValidationSetting'].validators.find((v: IValidatorDescription) => v.functionName === validator);
     }
 
     static RemoveValidators(control: UntypedFormControl, validatorsToRemove: string[], questionSetting: IFormItemSetting)
@@ -292,16 +292,16 @@ export class Directives
         if (!Directives.hasValidators(control, validatorsToRemove, questionSetting))
             return;
 
-        if (questionSetting.validationSetting && questionSetting.unchangedValidationSetting.validators)
+        if (questionSetting['validationSetting'] && questionSetting['unchangedValidationSetting'].validators)
         {
-            let validators: IValidatorDescription[] = questionSetting.validationSetting.validators.filter((v: IValidatorDescription) => !validatorsToRemove.includes(v.functionName));
+            let validators: IValidatorDescription[] = questionSetting['validationSetting'].validators.filter((v: IValidatorDescription) => !validatorsToRemove.includes(v.functionName));
             if (validators)
             {
-                questionSetting.validationSetting.validators = validators;
+                questionSetting['validationSetting'].validators = validators;
                 control.clearValidators();
                 control.setValidators(ObjectHelper.getValidatorFunctions(validators));
                 control.updateValueAndValidity();
-                questionSetting.placeholder = '';
+                questionSetting['placeholder'] = '';
             }
         }
     }
@@ -312,7 +312,7 @@ export class Directives
         if (Directives.hasValidators(formControl, validatorsToAdd, questionSetting))
             return;
 
-        if (questionSetting.unchangedValidationSetting)
+        if (questionSetting['unchangedValidationSetting'])
         {
             validatorsToAdd.forEach(v =>
             {
@@ -320,12 +320,12 @@ export class Directives
                 {
                     let newValidator: IValidatorDescription | null = Directives.getValidator(formControl, v, questionSetting);
                     if (newValidator)
-                        questionSetting.validationSetting.validators.push(newValidator);
+                        questionSetting['validationSetting'].validators.push(newValidator);
                 }
             });
 
             formControl.clearValidators();
-            formControl.setValidators(ObjectHelper.getValidatorFunctions(questionSetting.validationSetting.validators));
+            formControl.setValidators(ObjectHelper.getValidatorFunctions(questionSetting['validationSetting'].validators));
             formControl.updateValueAndValidity();
         }
     }

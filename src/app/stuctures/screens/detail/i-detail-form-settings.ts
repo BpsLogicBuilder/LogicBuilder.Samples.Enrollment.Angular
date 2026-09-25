@@ -25,8 +25,14 @@ export interface IDetailFieldSetting extends IDetailItem  {
     field: string;
     title: string;
     type: 'text' | 'numeric' | 'boolean' | 'date';
-    fieldTemplate?: IDetailFieldTemplate;
-    valueTextTemplate?: IDetailDropDownTemplate;
+}
+
+export interface IDetailInputFieldSetting extends IDetailFieldSetting  {
+    fieldTemplate: IDetailFieldTemplate;
+}
+
+export interface IDetailValueTextSetting extends IDetailFieldSetting  {
+    valueTextTemplate: IDetailDropDownTemplate;
 }
 
 export interface IDetailItem  {

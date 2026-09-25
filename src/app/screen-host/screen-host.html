@@ -1,0 +1,35 @@
+@if (screenSettingsSignal(); as screenSettings) {
+  @switch (screenSettings.viewType) {
+    @case (viewType.Grid) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-grid [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-grid></div>
+    }
+    @case (viewType.Create) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-create [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-create></div>
+    }
+    @case (viewType.Edit) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-edit [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-edit></div>
+    }
+    @case (viewType.Detail) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-detail [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-detail></div>
+    }
+    @case (viewType.Delete) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-delete [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-delete></div>
+    }
+    @case (viewType.Html) {
+      <div [animate.enter]="['fly-in-class']"><app-html-page [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-html-page></div>
+    }
+    @case (viewType.List) {
+      <div [animate.enter]="['fly-in-class']"><app-generic-list [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-list></div>
+    }
+    @case (viewType.FlowComplete) {
+      <div [animate.enter]="['fly-in-class']">FlowComplete</div>
+    }
+    @case (viewType.Exception) {
+      <div [animate.enter]="['fly-in-class']">
+        <div class="alert alert-danger">
+          <strong>{{screenSettings['settings'].message}}</strong>
+        </div>
+      </div>
+    }
+  }
+}
