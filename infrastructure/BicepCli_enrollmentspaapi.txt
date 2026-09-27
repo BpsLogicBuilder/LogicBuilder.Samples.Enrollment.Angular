@@ -1,7 +1,7 @@
-$rg = "rg-test"
-$acrName="<Get ACR Name from the portal>"
+$rg = "rg-enrollment"
+$acrName="enrollacrkqgs34eylclic"
 $imageTag="v1.0.0"
-$imageName="contosoangular"
+$imageName="enrollmentangular"
 
 # Login to ACR
 # docker login "${acrName}.azurecr.io"
@@ -11,4 +11,4 @@ az acr login -n ${acrName}
 docker buildx build --secret id=kendo_license,src=$env:APPDATA\Telerik\telerik-license.txt -t "${acrName}.azurecr.io/${imageName}:${imageTag}" -t "${acrName}.azurecr.io/${imageName}:latest" --push .
 
 
-az deployment group create --resource-group $rg --template-file infrastructure/contosoangular.bicep --parameters imageTag="$imageTag"
+az deployment group create --resource-group $rg --template-file infrastructure/enrollmentangular.bicep --parameters imageTag="$imageTag"

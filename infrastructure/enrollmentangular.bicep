@@ -37,7 +37,7 @@ param minReplicas int = 1
 param maxReplicas int = 3
 
 @description('The naming prefix for all resources.')
-param prefix string = 'contoso'
+param prefix string = 'enroll'
 
 @description('Specifies the container port.')
 param targetPort int = 8080
@@ -45,6 +45,7 @@ param targetPort int = 8080
 @description('The naming prefix for all resources.')
 param imageTag string = 'v1.0.0'
 
+var imageprefix string = 'enrollment'
 var uniqueSubString = uniqueString(resourceGroup().id)
 var acrName = '${prefix}acr${uniqueSubString}'
 var appConfigurationName = '${prefix}-config-${uniqueSubString}'
@@ -106,7 +107,7 @@ resource angularApp 'Microsoft.App/containerApps@2026-01-01' = {
       containers: [
         {
           name: 'angular'
-          image: '${acr.properties.loginServer}/${prefix}angular:${imageTag}'
+          image: '${acr.properties.loginServer}/${imageprefix}angular:${imageTag}'
           resources: {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
