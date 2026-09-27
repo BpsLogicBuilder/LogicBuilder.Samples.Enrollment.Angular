@@ -32,7 +32,7 @@ jobs:
     - name: Get Deployment Outputs
       id: get_deployment_outputs
       env:
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT }}
       run: |
           ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
           echo "::add-mask::$ACR_NAME"
@@ -41,7 +41,7 @@ jobs:
 
     - name: Log in to Azure Container Registry
       env:
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT }}
         ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
       run: |
           az acr login --name ${{ env.ACR_NAME }}
@@ -49,7 +49,7 @@ jobs:
     - name: Build and Upload Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        IMAGE_NAME: "contosoangular"
+        IMAGE_NAME: "enrollmentangular"
         ACR_LOGIN_SERVER_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}.azurecr.io
         TELERIK_LICENSE: ${{ secrets.TELERIK_LICENSE }}
       run: |
@@ -60,10 +60,11 @@ jobs:
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT }}
       with:
+        scope: resourcegroup
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.RESOURCE_GROUP}}
         parameters: imageTag=${{ env.IMAGE_TAG }}
-        template: ./infrastructure/contosoangular.bicep
+        template: ./infrastructure/enrollmentangular.bicep
         failOnStdErr: false
