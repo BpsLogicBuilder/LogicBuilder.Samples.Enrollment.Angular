@@ -1,3 +1,4 @@
+* 2026-09-28 - AB#212: Add AKS CD workflow.
 * 2026-09-25 - AB#211: Add CD workflow.
 * 2026-09-25 - AB#210: Upgrade to Angular v22.
 * 2026-09-07 - AB#210: prefer persistent keys over implemented members.
