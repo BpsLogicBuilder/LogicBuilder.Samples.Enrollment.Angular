@@ -28,7 +28,7 @@ jobs:
     - name: Get Deployment Outputs
       id: get_deployment_outputs
       env:
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT_AKS }}
       run: |
         ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
         echo "::add-mask::$ACR_NAME"
@@ -39,21 +39,21 @@ jobs:
         AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
         echo "::add-mask::$AKS_CLUSTER_NAME"
 
-        CONTOSO_APP_NAMESPACE=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.kubernetesNamespace.value -o tsv)
-        echo "::add-mask::$CONTOSO_APP_NAMESPACE"
+        ENROLLMENT_APP_NAMESPACE=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.kubernetesNamespace.value -o tsv)
+        echo "::add-mask::$ENROLLMENT_APP_NAMESPACE"
 
-        CONTOSO_ANGULAR_SERVICEACCOUNT_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoAngularServiceAccountName.value -o tsv)
-        echo "::add-mask::$CONTOSO_ANGULAR_SERVICEACCOUNT_NAME"
+        ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.enrollmentAngularServiceAccountName.value -o tsv)
+        echo "::add-mask::$ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME"
 
         echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
         echo "app_config_endpoint=$APP_CONFIG_ENDPOINT" >> $GITHUB_OUTPUT
         echo "aks_cluster_name=$AKS_CLUSTER_NAME" >> $GITHUB_OUTPUT
-        echo "contoso_app_namespace=$CONTOSO_APP_NAMESPACE" >> $GITHUB_OUTPUT
-        echo "contoso_angular_serviceaccount_name=$CONTOSO_ANGULAR_SERVICEACCOUNT_NAME" >> $GITHUB_OUTPUT
+        echo "enrollment_app_namespace=$ENROLLMENT_APP_NAMESPACE" >> $GITHUB_OUTPUT
+        echo "enrollment_angular_serviceaccount_name=$ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME" >> $GITHUB_OUTPUT
         
     - name: Log in to Azure Container Registry
       env:
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT_AKS }}
         ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
       run: |
           az acr login --name ${{ env.ACR_NAME }}
@@ -61,7 +61,7 @@ jobs:
     - name: Build and Upload Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        IMAGE_NAME: "contosoangular"
+        IMAGE_NAME: "enrollmentangular"
         ACR_LOGIN_SERVER_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}.azurecr.io
         TELERIK_LICENSE: ${{ secrets.TELERIK_LICENSE }}
       run: |
@@ -70,7 +70,7 @@ jobs:
 
     - name: Get AKS Credentials
       env:
-        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_ENROLLMENT_AKS }}
         AKS_CLUSTER_NAME: ${{ steps.get_deployment_outputs.outputs.aks_cluster_name }}
       run: |
         az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
@@ -88,14 +88,14 @@ jobs:
         ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
         APP_CONFIG_ENDPOINT: ${{ steps.get_deployment_outputs.outputs.app_config_endpoint }}
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        CONTOSO_APP_NAMESPACE: ${{ steps.get_deployment_outputs.outputs.contoso_app_namespace }}
-        CONTOSO_ANGULAR_SERVICEACCOUNT_NAME: ${{ steps.get_deployment_outputs.outputs.contoso_angular_serviceaccount_name }}
+        ENROLLMENT_APP_NAMESPACE: ${{ steps.get_deployment_outputs.outputs.enrollment_app_namespace }}
+        ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME: ${{ steps.get_deployment_outputs.outputs.enrollment_angular_serviceaccount_name }}
         LOAD_BALANCER_IP: ${{ steps.get_ip.outputs.load_balancer_ip }}
       run: |
         sed -e "s|ACR_NAME|${{ env.ACR_NAME }}|g" \
         -e "s|APP_CONFIG_ENDPOINT|${{ env.APP_CONFIG_ENDPOINT }}|g" \
         -e "s|IMAGE_TAG|${{ env.IMAGE_TAG }}|g" \
         -e "s|LOAD_BALANCER_IP|${{ env.LOAD_BALANCER_IP }}|g" \
-        -e "s|CONTOSO_ANGULAR_SERVICEACCOUNT_NAME|${{ env.CONTOSO_ANGULAR_SERVICEACCOUNT_NAME }}|g" \
-        -e "s|CONTOSO_APP_NAMESPACE|${{ env.CONTOSO_APP_NAMESPACE }}|g" \
-        infrastructure/aks/deployment.yaml | kubectl apply -f - -n ${{ env.CONTOSO_APP_NAMESPACE }}
+        -e "s|ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME|${{ env.ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME }}|g" \
+        -e "s|ENROLLMENT_APP_NAMESPACE|${{ env.ENROLLMENT_APP_NAMESPACE }}|g" \
+        infrastructure/aks/deployment.yaml | kubectl apply -f - -n ${{ env.ENROLLMENT_APP_NAMESPACE }}

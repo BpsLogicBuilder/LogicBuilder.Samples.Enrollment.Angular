@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: contoso-angular
-  namespace: CONTOSO_APP_NAMESPACE
+  name: enrollment-angular
+  namespace: ENROLLMENT_APP_NAMESPACE
   labels:
-    app: contoso-angular
+    app: enrollment-angular
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: contoso-angular
+      app: enrollment-angular
   template:
     metadata:
       labels:
-        app: contoso-angular
+        app: enrollment-angular
     spec:
+      nodeSelector:
+        workload: apps
       automountServiceAccountToken: false
-      serviceAccountName: CONTOSO_ANGULAR_SERVICEACCOUNT_NAME
+      serviceAccountName: ENROLLMENT_ANGULAR_SERVICEACCOUNT_NAME
       containers:
-      - name: contoso-angular
-        image: ACR_NAME.azurecr.io/contosoangular:IMAGE_TAG
+      - name: enrollment-angular
+        image: ACR_NAME.azurecr.io/enrollmentangular:IMAGE_TAG
         ports:
         - name: angular-http
           containerPort: 8080
@@ -27,11 +29,11 @@ spec:
         - name: APPLICATION_CONFIGURATION_ENDPOINT
           value: "APP_CONFIG_ENDPOINT"
         - name: WORKFLOW_URL
-          value: "http://contoso-spa-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
+          value: "http://enrollment-spa-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
         - name: CRUD_URL
-          value: "http://contoso-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
+          value: "http://enrollment-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
         - name: GRID_URL
-          value: "http://contoso-kendo-grid-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
+          value: "http://enrollment-kendo-grid-api.LOAD_BALANCER_IP.nip.io" # NOSONAR - DEV Only
         resources:
           requests:
             memory: "256Mi"
