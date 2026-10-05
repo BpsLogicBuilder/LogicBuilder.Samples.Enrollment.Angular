@@ -1,4 +1,4 @@
-import { Component, OnInit, input, signal, inject, forwardRef } from '@angular/core';
+import { Component, OnInit, input, signal, inject, effect, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IDropDownTemplate } from '../../stuctures/screens/edit/i-edit-form-settings';
 import { GenericService } from '../../http/generic.service';
@@ -34,6 +34,10 @@ export class FormFieldDropdown implements OnInit, ControlValueAccessor {
     this.onTouched = () => { };
     this.onChange = (_: any) => {};
     this.disabled = false;
+    effect(() => {
+      this.reloadInputSignal();
+      setTimeout(() => this.getDropDownData(), 10);
+    });
   }
 
   private readonly _genericService = inject(GenericService); 
@@ -49,7 +53,6 @@ export class FormFieldDropdown implements OnInit, ControlValueAccessor {
   ngOnInit()
   {
     this.setDefaultItem();
-    this.getDropDownData();
   }
 
   writeValue(obj: any): void

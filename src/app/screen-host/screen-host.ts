@@ -8,9 +8,10 @@ import { GenericDetail } from '../generic/generic-detail/generic-detail';
 import { GenericDelete } from '../generic/generic-delete/generic-delete';
 import { HtmlPage } from '../html-page/html-page';
 import { GenericList } from '../generic/generic-list/generic-list';
+import { AgentChat } from '../generic/agent-chat/agent-chat';
 
 @Component({
-  imports: [GenericGrid, GenericCreate, GenericEdit, GenericDetail, GenericDelete, HtmlPage, GenericList],
+  imports: [AgentChat, GenericGrid, GenericCreate, GenericEdit, GenericDetail, GenericDelete, HtmlPage, GenericList],
   selector: 'app-screen-host',
   styleUrl: './screen-host.css',
   templateUrl: './screen-host.html',

@@ -1,3 +1,4 @@
+* 2026-10-05 - AB#232: Create Agent Chat component
 * 2026-09-28 - AB#212: Add AKS CD workflow.
 * 2026-09-25 - AB#211: Add CD workflow.
 * 2026-09-25 - AB#210: Upgrade to Angular v22.
