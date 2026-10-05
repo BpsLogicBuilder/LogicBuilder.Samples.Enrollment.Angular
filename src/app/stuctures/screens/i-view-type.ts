@@ -7,5 +7,6 @@ export enum ViewTypeEnum {
     Html,
     List,
     FlowComplete,
-    Exception
+    Exception,
+    Chat
 }

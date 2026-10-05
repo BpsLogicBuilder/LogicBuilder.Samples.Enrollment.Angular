@@ -22,6 +22,9 @@ export class EnvironmentConfigService {
         if (!this.env?.["WORKFLOW_URL"]) {
           console.warn('⚠️ Warning: WORKFLOW_URL is not defined in env.json');
         }
+        if (!this.env?.["CHATHUB_URL"]) {
+          console.warn('⚠️ Warning: CHATHUB_URL is not defined in env.json');
+        }
       })
     )
   }

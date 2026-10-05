@@ -9,6 +9,9 @@
     @case (viewType.Edit) {
       <div [animate.enter]="['fly-in-class']"><app-generic-edit [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-edit></div>
     }
+    @case (viewType.Chat) {
+      <div [animate.enter]="['fly-in-class']"><app-agent-chat [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-agent-chat></div>
+    }
     @case (viewType.Detail) {
       <div [animate.enter]="['fly-in-class']"><app-generic-detail [settingsInputSignal]="screenSettings['settings']" [commandButtonsInputSignal]="screenSettings.commandButtons"></app-generic-detail></div>
     }
