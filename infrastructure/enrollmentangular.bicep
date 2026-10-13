@@ -71,6 +71,10 @@ resource kendoApiService 'Microsoft.App/containerApps@2026-01-01' existing = {
   name: '${prefix}-kendo-api-${uniqueSubString}'
 }
 
+resource chatHubService 'Microsoft.App/containerApps@2026-01-01' existing = {
+  name: '${prefix}-chat-hub-${uniqueSubString}'
+}
+
 resource workflowService 'Microsoft.App/containerApps@2026-01-01' existing = {
   name: '${prefix}-workflow-${uniqueSubString}'
 }
@@ -120,6 +124,10 @@ resource angularApp 'Microsoft.App/containerApps@2026-01-01' = {
             {
               name: 'GRID_URL'
               value: 'https://${kendoApiService.properties.configuration.ingress.fqdn}'
+            }
+            {
+              name: 'CHATHUB_URL'
+              value: 'https://${chatHubService.properties.configuration.ingress.fqdn}'
             }
             {
               name: 'WORKFLOW_URL'
