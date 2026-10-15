@@ -1,4 +1,5 @@
-* 2026-10-13 - AB#242: Include chat hub URL in environment config.
+* 2026-10-15 - AB#243: Include chat hub URL in AKS environment config.
+* 2026-10-13 - AB#242: Include chat hub URL in ACA environment config.
 * 2026-10-05 - AB#232: Create Agent Chat component
 * 2026-09-28 - AB#212: Add AKS CD workflow.
 * 2026-09-25 - AB#211: Add CD workflow.

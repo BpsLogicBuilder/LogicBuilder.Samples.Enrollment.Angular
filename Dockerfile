@@ -16,7 +16,15 @@ FROM nginxinc/nginx-unprivileged:stable-alpine
 COPY --chown=nginx:nginx --from=builder /app/dist/enrollment/browser /usr/share/nginx/html
 COPY --chown=nginx:nginx env.template.json /usr/share/nginx/html/env.template.json
 COPY --chown=nginx:nginx entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+
+USER root
+
+COPY entrypoint.sh /entrypoint.sh
+
+# Fix for windows charcater error (entrypoint.sh file not found)
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+
+USER nginx
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
