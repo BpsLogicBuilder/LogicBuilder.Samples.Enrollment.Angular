@@ -1,3 +1,4 @@
+* 2026-10-22 - AB#253: Remove check-for-ab-number workflow.
 * 2026-10-15 - AB#243: Include chat hub URL in AKS environment config.
 * 2026-10-13 - AB#242: Include chat hub URL in ACA environment config.
 * 2026-10-05 - AB#232: Create Agent Chat component
